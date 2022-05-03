@@ -1,5 +1,12 @@
 muffin = "";
 pokemon = "";
+
+score_left_wrist = 0;
+song = ""
+
+status1 = false
+status2 = false
+
 LeftWristX = 0;
 LeftWristY = 0;
 RightWristX = 0;
@@ -23,6 +30,16 @@ function setup() {
 
 function draw() {
     image(video, 0, 0, 600, 500);
+    fill('red');
+    stroke('red');
+
+    if (score_left_wrist > 0.005) {
+        circle(LeftWristX, LeftWristY, 20);
+        if (!muffin.isPlaying()) {
+            pokemon.stop();
+            muffin.play();
+        }
+    }
 }
 
 function modelLoaded() {
@@ -32,6 +49,9 @@ function modelLoaded() {
 function gotPoses(results) {
     if (results.length > 0) {
         console.log(results);
+
+        score_left_wrist = results[0].pose.keypoints[9].score;
+
         LeftWristX = results[0].pose.leftWrist.x;
         LeftWristY = results[0].pose.leftWrist.y;
         RightWristX = results[0].pose.rightWrist.x;
